@@ -1,29 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import './Main.css';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import styles from "./main.module.css";
 
-const Main = () => {
-  const [products, setProducts] = useState([]);
+export default function Home() {
+  const [listaProduct, setListaProduct] = useState([]);
 
   useEffect(() => {
-    fetch('adicionar link da imagem http)
-      .then(response => response.json())
-      .then(data => setProducts(data));
+    const getProducts = async () => {
+      try {
+        const response = await fetch("https://fakestoreapi.com/products");
+        const data = await response.json();
+        setListaProduct(data);
+      } catch (error) {
+        console.error("Erro ao carregar produtos:", error);
+      }
+    };
+    getProducts();
   }, []);
 
+  const orderAz = () => {
+    let newList = [...listaProduct].sort((a, b) => a.title.localeCompare(b.title));
+    setListaProduct(newList);
+  };
+
+  const orderZa = () => {
+    let newList = [...listaProduct].sort((a, b) => b.title.localeCompare(a.title));
+    setListaProduct(newList);
+  };
+
   return (
-    <main className="main">
-      {products.map(product => (
-        <div key={product.id} className="product">
-          <img src={product.image} alt={product.title} className="product-image" />
-          <h2>{product.title}</h2>
-          <p>{product.description}</p>
-          <p>Categoria: {product.category}</p>
-          <p>Preço: ${product.price}</p>
-          <p>Avaliações: {product.rating.count}</p>
-        </div>
-      ))}
-    </main>
+    <>
+      <div>
+        <button onClick={orderAz}>A-Z</button>
+        <button onClick={orderZa}>Z-A</button>
+      </div>
+      <main className={styles.main}>
+        {listaProduct.map((produto) => (
+          <div className={styles.card} key={produto.id}>
+            <h3>{produto.title}</h3>
+            <p>Categoria: {produto.category}</p>
+            <h4>Valor {produto.price}</h4>
+            <p>Descrição: {produto.description}</p>
+            <p>Estoque: {produto.rating.count}</p>
+            <Image width={100} height={100} src={produto.image} alt={produto.title} />
+          </div>
+        ))}
+      </main>
+    </>
   );
 }
-
-export default Main;
