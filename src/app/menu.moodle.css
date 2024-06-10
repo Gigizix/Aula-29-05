@@ -1,0 +1,34 @@
+.cabecalho {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #FF69B4; /* Cor rosa claro */
+    border-bottom: 1px solid #FFC0CB; /* Cor rosa mais clara */
+    height: 80px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.nome h1 {
+    color: #FFFFFF; /* Branco */
+}
+
+.botao {
+    background-color: #FFFFFF; /* Branco */
+    border: 2px solid #FF69B4; /* Cor rosa claro */
+    color: #FF69B4; /* Cor rosa claro */
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.botao:hover {
+    background-color: #FF69B4; /* Cor rosa claro */
+    color: #FFFFFF; /* Branco */
+}
