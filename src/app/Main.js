@@ -1,51 +1,63 @@
+'use client'
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./main.module.css";
+import Spinner from "./Spinner";
 
 export default function Home() {
-  const [listaProduct, setListaProduct] = useState([]);
+
+  const [listaProduct, setListaProdudt] = useState ([]);
 
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        const data = await response.json();
-        setListaProduct(data);
-      } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
-      }
+    const getProtucts = async () =>{
+      const response = await fetch("https://fakestoreapi.com/products")
+      const data = await response.json();
+      setListaProdudt(data);
     };
-    getProducts();
+    getProtucts();
   }, []);
 
-  const orderAz = () => {
-    let newList = [...listaProduct].sort((a, b) => a.title.localeCompare(b.title));
-    setListaProduct(newList);
-  };
+  const orderAz  = () => {
+    let newList = [...listaProduct].sort((a,b)=>
+      a.title.localeCompare(b.title)
+    );
+    setListaProdudt(newList);
+  }
 
-  const orderZa = () => {
-    let newList = [...listaProduct].sort((a, b) => b.title.localeCompare(a.title));
-    setListaProduct(newList);
-  };
+  const orderZa  = () => {
+    let newList = [...listaProduct].sort((a,b)=>
+      a.title.localeCompare(b.title)
+    );
+    newList = newList.reverse();
+    setListaProdudt(newList);
+  }
+
+  if (listaProduct[0]==null){
+    return <Spinner/>
+  }
 
   return (
     <>
-      <div>
-        <button onClick={orderAz}>A-Z</button>
-        <button onClick={orderZa}>Z-A</button>
-      </div>
-      <main className={styles.main}>
-        {listaProduct.map((produto) => (
-          <div className={styles.card} key={produto.id}>
-            <h3>{produto.title}</h3>
-            <p>Categoria: {produto.category}</p>
-            <h4>Valor {produto.price}</h4>
-            <p>Descrição: {produto.description}</p>
-            <p>Estoque: {produto.rating.count}</p>
-            <Image width={100} height={100} src={produto.image} alt={produto.title} />
-          </div>
-        ))}
-      </main>
-    </>
+    <div>
+      <button onClick={orderAz}>A-Z</button>
+      <button onClick={orderZa}>Z-A</button>
+    </div>
+    <main className={styles.main}>
+      {listaProduct.map((produtos) => 
+       <div className={styles.card} key={produtos.id}>  
+          <h3>{produtos.title}</h3>
+          <h4>R$: {produtos.price}</h4>
+          <p>Descrição: {produtos.description}</p>
+          <p>Categoria: {produtos.category}</p>
+          <p>Estoque: {produtos.rating.count}</p>
+          <Image  
+            width={100} 
+            height={100} 
+            src={produtos.image}
+          />
+       </div>
+    )};   
+    </main>
+  </>
   );
 }
